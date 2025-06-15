@@ -1,0 +1,19 @@
+{
+  "accountAssociation": {
+    "header": "placeholder_header",
+    "payload": "placeholder_payload", 
+    "signature": "placeholder_signature"
+  },
+  "frame": {
+    "version": "next",
+    "name": "FarFlag",
+    "iconUrl": "https://farflag.xyz/logo.png",
+    "homeUrl": "https://farflag.xyz/",
+    "imageUrl": "https://farflag.xyz/opengraph-image.png",
+    "buttonTitle": "🚩 Start",
+    "splashImageUrl": "https://farflag.xyz/logo.png",
+    "splashBackgroundColor": "#1e40af",
+    "webhookUrl": "https://farflag.xyz/api/webhook"
+  }
+}
+
