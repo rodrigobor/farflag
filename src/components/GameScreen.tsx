@@ -118,11 +118,12 @@ export const GameScreen: React.FC<GameScreenProps> = ({
       <button
         key={index}
         onClick={() => handleAnswerClick(option)}
-        className={`w-full p-4 rounded-xl text-lg font-semibold text-center shadow-md ${bgClass}`}
+        className={`w-full py-4 px-6 min-h-[56px] text-lg font-medium rounded-xl border text-white transition-colors text-center ${bgClass}`}
         disabled={!isTimerActive || !!selectedAnswer}
       >
         {option}
       </button>
+
     );
   })}
 </div>
