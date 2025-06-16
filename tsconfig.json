@@ -8,7 +8,8 @@
     "jsx": "react-jsx",
     "baseUrl": "./src",
     "esModuleInterop": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "types": ["@vercel/node"]
   },
   "include": ["src"]
 }

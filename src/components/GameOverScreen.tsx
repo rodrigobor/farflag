@@ -32,6 +32,7 @@ export const GameOverScreen: React.FC<GameOverScreenProps> = ({
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-blue-600 to-blue-800 text-white p-6">
+      {/* Título e pontuação final */}
       <div className="text-center mb-8">
         <h1 className="text-3xl font-bold mb-2">{t('gameOver')}</h1>
         <div className="bg-white/20 rounded-lg p-6 backdrop-blur-sm">
@@ -40,7 +41,7 @@ export const GameOverScreen: React.FC<GameOverScreenProps> = ({
         </div>
       </div>
 
-      {/* Mint Section */}
+      {/* Botão de mint */}
       {!mintSuccess && (
         <div className="bg-white/10 rounded-lg p-6 mb-6 backdrop-blur-sm text-center w-full max-w-sm">
           <h3 className="text-lg font-semibold mb-2">{t('mintScore')}</h3>
@@ -57,23 +58,21 @@ export const GameOverScreen: React.FC<GameOverScreenProps> = ({
             disabled={isMinting}
             className="bg-green-500 hover:bg-green-600 disabled:bg-gray-500 disabled:cursor-not-allowed text-white px-6 py-3 rounded-lg font-semibold transition-colors w-full"
           >
-            {isMinting ? 'Minting...' : `${t('mint')} (0.10 USDC)`}
+            {isMinting ? t('minting') : `${t('mint')} (0.10 USDC)`}
           </button>
           
-          <p className="text-xs opacity-60 mt-2">
-            Requires USDC on BASE network
-          </p>
+          <p className="text-xs opacity-60 mt-2">Requires USDC on BASE network</p>
         </div>
       )}
 
-      {/* Share Section */}
+      {/* Botão de compartilhar no Farcaster */}
       {mintSuccess && (
         <div className="bg-white/10 rounded-lg p-6 mb-6 backdrop-blur-sm text-center w-full max-w-sm">
           <div className="text-green-400 mb-4">
             <svg className="w-12 h-12 mx-auto mb-2" fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
             </svg>
-            <p className="font-semibold">Mint Successful!</p>
+            <p className="font-semibold">{t('mintSuccessful')}</p>
           </div>
           <button
             onClick={onShareScore}
@@ -84,7 +83,7 @@ export const GameOverScreen: React.FC<GameOverScreenProps> = ({
         </div>
       )}
 
-      {/* Action Buttons */}
+      {/* Botão de jogar novamente */}
       <div className="space-y-3 w-full max-w-sm">
         <button
           onClick={onPlayAgain}
@@ -94,12 +93,11 @@ export const GameOverScreen: React.FC<GameOverScreenProps> = ({
         </button>
       </div>
 
-      {/* Score Stats */}
+      {/* Estatísticas finais */}
       <div className="mt-8 text-center text-sm opacity-70">
-        <p>Questions answered: {Math.floor(score / 10)}</p>
-        <p>Accuracy: 100%</p>
+        <p>{t('questionsAnswered')}: {Math.floor(score / 10)}</p>
+        <p>{t('accuracy')}: 100%</p>
       </div>
     </div>
   );
 };
-

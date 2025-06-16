@@ -5,13 +5,13 @@
     "signature":"MHg0Y2ZjYmRmMjE1MzlmMGMxNzY5MWY2MzM0N2UwZmYzMDhhZTUwNDNiMmM5MjA0NzZhNmVmNTdmNGM3NWI5NjQyNzRiMGVmMDVlOTU2MWRhYmJmMzM0YzZhMzZmNWY4MzI2MDBiNjdhOGIxNTgyYTUwOGQ4M2I1Yzg5OWIzNmRjNDFj"
   },
   "frame": {
-    "version": "next",
-    "name": "FarFlag",
-    "iconUrl": "https://farflag.vercel.app/icon.png",
-    "homeUrl": "https://farflag.vercel.app/",
-    "imageUrl": "https://farflag.vercel.app/opengraph-image.png",
-    "buttonTitle": "🚩 Start",
-    "splashImageUrl": "https://farflag.vercel.app/logo.png",
-    "splashBackgroundColor": "#1e40af"
-  }
+  "version":"next",
+  "name":"FarFlag",
+  "iconUrl":"https://farflag.vercel.app/icon.png",
+  "homeUrl":"https://farflag.vercel.app/",
+  "imageUrl":"https://farflag.vercel.app/opengraph-image.png",
+  "buttonTitle":"🚩 Mint Score",
+  "action":{"type":"tx","target":"https://farflag.vercel.app/api/mint"},
+  "webhookUrl":"https://farflag.vercel.app/api/mint"
+}
 }
