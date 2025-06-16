@@ -1,19 +1,17 @@
 {
   "accountAssociation": {
-    "header": "placeholder_header",
-    "payload": "placeholder_payload", 
-    "signature": "placeholder_signature"
+    "header": "PLACEHOLDER_HEADER",
+    "payload": "PLACEHOLDER_PAYLOAD",
+    "signature": "PLACEHOLDER_SIGNATURE"
   },
   "frame": {
     "version": "next",
     "name": "FarFlag",
-    "iconUrl": "https://farflag.xyz/logo.png",
-    "homeUrl": "https://farflag.xyz/",
-    "imageUrl": "https://farflag.xyz/opengraph-image.png",
+    "iconUrl": "https://farflag.vercel.app/icon.png",
+    "homeUrl": "https://farflag.vercel.app/",
+    "imageUrl": "https://farflag.vercel.app/opengraph-image.png",
     "buttonTitle": "🚩 Start",
-    "splashImageUrl": "https://farflag.xyz/logo.png",
-    "splashBackgroundColor": "#1e40af",
-    "webhookUrl": "https://farflag.xyz/api/webhook"
+    "splashImageUrl": "https://farflag.vercel.app/logo.png",
+    "splashBackgroundColor": "#1e40af"
   }
 }
-
