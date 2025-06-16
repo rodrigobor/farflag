@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { sdk } from '@farcaster/frame-sdk'; // 1
 import { HomeScreen } from './components/HomeScreen';
 import { GameScreen } from './components/GameScreen';
 import { GameOverScreen } from './components/GameOverScreen';
 import { useGame } from './hooks/useGame';
 
 export default function App() {
+  const [isReady, setIsReady] = useState(false);
   const {
     gameState,
     lastScore,
@@ -15,15 +17,18 @@ export default function App() {
     timeLeft
   } = useGame();
 
-  // Placeholder functions até implementar a lógica real
-  const handleMintScore = async () => {
-    console.log('Minting not implemented yet');
-    return;
-  };
+  useEffect(() => {
+    (async () => {
+      await sdk.actions.ready(); // 2
+      setIsReady(true);
+    })();
+  }, []);
 
-  const handleShareScore = () => {
-    console.log('Sharing not implemented yet');
-  };
+  if (!isReady) return null;
+
+  // Placeholder de funções
+  const handleMintScore = async () => console.log('Minting not implemented');
+  const handleShareScore = () => console.log('Sharing not implemented');
 
   if (!gameState.currentFlag && !gameState.isGameOver) {
     return <HomeScreen lastScore={lastScore} onStartGame={startGame} />;
@@ -42,11 +47,10 @@ export default function App() {
 
   return (
     <GameScreen
-  gameState={gameState}
-  onSelectAnswer={selectAnswer}
-  isTimerActive={isTimerActive}
-  timeLeft={timeLeft}
-/>
-
+      gameState={gameState}
+      onSelectAnswer={selectAnswer}
+      isTimerActive={isTimerActive}
+      timeLeft={timeLeft}
+    />
   );
 }
