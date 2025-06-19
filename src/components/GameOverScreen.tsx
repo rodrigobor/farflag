@@ -33,7 +33,7 @@ export const GameOverScreen: React.FC<GameOverScreenProps> = ({
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-blue-600 to-blue-800 text-white p-6">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-white text-black p-6">
       {/* Título e pontuação final */}
       <div className="text-center mb-8">
         <h1 className="text-3xl font-bold mb-2">{t('Game Over')}</h1>
