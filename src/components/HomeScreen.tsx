@@ -24,12 +24,13 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ lastScore, onStartGame }
       )}
 
       <button
-        onClick={onStartGame}
-        className="bg-blue-600 text-white px-12 py-5 rounded-full text-2xl font-bold hover:bg-blue-700 transition-colors shadow-lg w-full max-w-xs"
+  onClick={onStartGame}
+  className="min-w-[240px] min-h-[100px] py-5 px-10 bg-blue-600 text-white text-3xl font-bold rounded-full shadow-lg hover:bg-blue-700 transition-colors"
+>
+  Start Game
+</button>
 
-      >
-        {t('startGame')}
-      </button>
+
 
       <div className="mt-8 text-center text-sm opacity-70">
         <p>Identify the country by its flag!</p>

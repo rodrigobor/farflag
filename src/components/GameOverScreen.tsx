@@ -63,12 +63,13 @@ export const GameOverScreen: React.FC<GameOverScreenProps> = ({
           )}
 
           <button
-            onClick={handleMint}
-            disabled={isMinting}
-            className="bg-green-500 hover:bg-green-600 disabled:bg-gray-500 disabled:cursor-not-allowed text-white px-6 py-3 rounded-lg font-semibold transition-colors w-full"
-          >
-            {isMinting ? t('minting') : `${t('mint')} (0.10 USDC)`}
-          </button>
+  onClick={handleMint}
+  disabled={isMinting}
+  className="bg-green-500 hover:bg-green-600 disabled:bg-gray-500 disabled:cursor-not-allowed text-white text-2xl font-bold px-10 py-5 rounded-lg transition-colors w-full min-h-[100px]"
+>
+  {isMinting ? t('minting') : `${t('mint')} (0.10 USDC)`}
+</button>
+
 
           <p className="text-xs opacity-60 mt-2">Requires USDC on BASE network</p>
         </div>
@@ -95,11 +96,12 @@ export const GameOverScreen: React.FC<GameOverScreenProps> = ({
       {/* Botão de jogar novamente */}
       <div className="space-y-3 w-full max-w-sm">
         <button
-          onClick={onPlayAgain}
-          className="w-full bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
-        >
-          {t('Play Again')}
-        </button>
+  onClick={onPlayAgain}
+  className="w-full bg-white text-blue-600 text-2xl font-bold px-10 py-5 rounded-lg hover:bg-gray-100 transition-colors min-h-[100px]"
+>
+  {t('Play Again')}
+</button>
+
       </div>
 
       {/* Estatísticas finais */}
