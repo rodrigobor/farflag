@@ -25,7 +25,8 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ lastScore, onStartGame }
 
       <button
         onClick={onStartGame}
-        className="bg-white text-blue-600 px-8 py-4 rounded-full text-xl font-semibold hover:bg-gray-100 transition-colors shadow-lg"
+        className="bg-blue-600 text-white px-12 py-5 rounded-full text-2xl font-bold hover:bg-blue-700 transition-colors shadow-lg w-full max-w-xs"
+
       >
         {t('startGame')}
       </button>
