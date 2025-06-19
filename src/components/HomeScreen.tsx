@@ -10,7 +10,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ lastScore, onStartGame }
   const { t } = useTranslation();
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-blue-600 to-blue-800 text-white p-6">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-white text-black p-6">
       <div className="text-center mb-8">
         <h1 className="text-4xl font-bold mb-2">🚩 FarFlag</h1>
         <p className="text-lg opacity-90">Flag Quiz Game</p>

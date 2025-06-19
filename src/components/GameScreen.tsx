@@ -32,7 +32,7 @@ export const GameScreen: React.FC<GameScreenProps> = ({
 
   if (!gameState.currentFlag) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-blue-600">
+      <div className="flex items-center justify-center min-h-screen bg-white text-black">
         <div className="text-white text-xl">Loading...</div>
       </div>
     );
@@ -59,9 +59,10 @@ export const GameScreen: React.FC<GameScreenProps> = ({
 
   return (
     <div
-      key={currentFlag.id}
-      className="flex flex-col min-h-screen bg-gradient-to-b from-blue-600 to-blue-800 text-white animate-fade-in"
-    >
+        key={currentFlag.id}
+        className="flex flex-col min-h-screen bg-white text-black animate-fade-in"
+      >
+
       {/* Header */}
       <div className="flex justify-between items-center p-4 border-b border-white/20">
         <div className="text-lg font-semibold">
