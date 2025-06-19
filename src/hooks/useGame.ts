@@ -16,6 +16,7 @@ export const useGame = () => {
   });
 
   const [lastScore, setLastScore] = useState(0);
+  const [lastQuestion, setLastQuestion] = useState<Flag | null>(null); // ✅ NOVO
   const [isTimerActive, setIsTimerActive] = useState(false);
   const [timeLeft, setTimeLeft] = useState(10);
   const [questionTime, setQuestionTime] = useState(10);
@@ -38,6 +39,7 @@ export const useGame = () => {
       setTimeLeft(prev => {
         if (prev <= 1) {
           clearInterval(timerRef.current!);
+          setLastQuestion(gameState.currentFlag); // ✅ Salva a pergunta antes de terminar
           endGame();
           return 0;
         }
@@ -57,6 +59,7 @@ export const useGame = () => {
     setTimeLeft(initialTime);
     setQuestionTime(initialTime);
     setIsTimerActive(true);
+    setLastQuestion(null); // ✅ limpa pergunta anterior ao iniciar novo jogo
   };
 
   const selectAnswer = (answer: string) => {
@@ -64,6 +67,7 @@ export const useGame = () => {
 
     if (answer === gameState.currentFlag.country) {
       const newScore = gameState.score + 10;
+      setLastQuestion(gameState.currentFlag); // ✅ salva pergunta atual
       const nextFlag = getRandomQuestion(gameState.currentFlag.id);
       const newTime = Math.max(2, 10 - Math.floor(newScore / 100));
 
@@ -76,6 +80,7 @@ export const useGame = () => {
       setTimeLeft(newTime);
       setQuestionTime(newTime);
     } else {
+      setLastQuestion(gameState.currentFlag); // ✅ salva pergunta antes de encerrar
       endGame();
     }
   };
@@ -90,6 +95,7 @@ export const useGame = () => {
   return {
     gameState,
     lastScore,
+    lastQuestion, // ✅ exporta
     startGame,
     selectAnswer,
     endGame,

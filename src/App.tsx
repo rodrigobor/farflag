@@ -13,6 +13,7 @@ export default function App() {
   const {
     gameState,
     lastScore,
+    lastQuestion, // ✅ Importado do hook
     startGame,
     selectAnswer,
     endGame,
@@ -74,6 +75,7 @@ export default function App() {
         onShareScore={handleShareScore}
         isMinting={isMinting}
         mintSuccess={mintSuccess}
+        correctAnswer={lastQuestion?.country} // ✅ Passando a resposta correta
       />
     );
   }

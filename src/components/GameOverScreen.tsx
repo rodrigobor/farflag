@@ -8,6 +8,7 @@ interface GameOverScreenProps {
   onShareScore: () => void;
   isMinting?: boolean;
   mintSuccess?: boolean;
+  correctAnswer?: string; // ✅ nova prop
 }
 
 export const GameOverScreen: React.FC<GameOverScreenProps> = ({
@@ -16,7 +17,8 @@ export const GameOverScreen: React.FC<GameOverScreenProps> = ({
   onMintScore,
   onShareScore,
   isMinting = false,
-  mintSuccess = false
+  mintSuccess = false,
+  correctAnswer // ✅ adicionada
 }) => {
   const { t } = useTranslation();
   const [mintError, setMintError] = useState<string | null>(null);
@@ -34,25 +36,32 @@ export const GameOverScreen: React.FC<GameOverScreenProps> = ({
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-blue-600 to-blue-800 text-white p-6">
       {/* Título e pontuação final */}
       <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold mb-2">{t('gameOver')}</h1>
+        <h1 className="text-3xl font-bold mb-2">{t('Game Over')}</h1>
         <div className="bg-white/20 rounded-lg p-6 backdrop-blur-sm">
-          <p className="text-sm opacity-80 mb-2">{t('finalScore')}</p>
+          <p className="text-sm opacity-80 mb-2">{t('Final Score:')}</p>
           <p className="text-4xl font-bold">{score}</p>
+
+          {/* ✅ Exibir resposta correta */}
+          {correctAnswer && (
+            <p className="mt-4 text-sm text-yellow-300">
+              {t('Correct Answer')}: <span className="font-semibold">{correctAnswer}</span>
+            </p>
+          )}
         </div>
       </div>
 
       {/* Botão de mint */}
       {!mintSuccess && (
         <div className="bg-white/10 rounded-lg p-6 mb-6 backdrop-blur-sm text-center w-full max-w-sm">
-          <h3 className="text-lg font-semibold mb-2">{t('mintScore')}</h3>
-          <p className="text-sm opacity-80 mb-4">{t('mintDescription')}</p>
-          
+          <h3 className="text-lg font-semibold mb-2">{t('Mint Score')}</h3>
+          <p className="text-sm opacity-80 mb-4">{t('mint description')}</p>
+
           {mintError && (
             <div className="bg-red-500/20 border border-red-500/50 rounded-lg p-3 mb-4 text-sm">
               {mintError}
             </div>
           )}
-          
+
           <button
             onClick={handleMint}
             disabled={isMinting}
@@ -60,7 +69,7 @@ export const GameOverScreen: React.FC<GameOverScreenProps> = ({
           >
             {isMinting ? t('minting') : `${t('mint')} (0.10 USDC)`}
           </button>
-          
+
           <p className="text-xs opacity-60 mt-2">Requires USDC on BASE network</p>
         </div>
       )}
@@ -72,13 +81,13 @@ export const GameOverScreen: React.FC<GameOverScreenProps> = ({
             <svg className="w-12 h-12 mx-auto mb-2" fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
             </svg>
-            <p className="font-semibold">{t('mintSuccessful')}</p>
+            <p className="font-semibold">{t('mint Successful')}</p>
           </div>
           <button
             onClick={onShareScore}
             className="bg-purple-500 hover:bg-purple-600 text-white px-6 py-3 rounded-lg font-semibold transition-colors w-full"
           >
-            {t('shareOnFarcaster')}
+            {t('Share on Farcaster')}
           </button>
         </div>
       )}
@@ -89,13 +98,13 @@ export const GameOverScreen: React.FC<GameOverScreenProps> = ({
           onClick={onPlayAgain}
           className="w-full bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
         >
-          {t('playAgain')}
+          {t('Play Again')}
         </button>
       </div>
 
       {/* Estatísticas finais */}
       <div className="mt-8 text-center text-sm opacity-70">
-        <p>{t('questionsAnswered')}: {Math.floor(score / 10)}</p>
+        <p>{t('Questions Answered')}: {Math.floor(score / 10)}</p>
         <p>{t('accuracy')}: 100%</p>
       </div>
     </div>
