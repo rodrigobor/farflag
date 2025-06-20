@@ -57,6 +57,12 @@ export default function App() {
     sdk.actions.ready().then(() => setIsReady(true));
   }, []);
 
+  useEffect(() => {
+  if (gameState.isGameOver && view === 'game') {
+    setView('gameover');
+  }
+}, [gameState.isGameOver, view]);
+
   const handleMintScore = async () => {
     if (!user?.farcaster?.username) {
       alert('Você precisa estar logado no Farcaster.');
