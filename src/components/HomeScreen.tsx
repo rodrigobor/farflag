@@ -18,7 +18,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ lastScore, onStartGame }
 
       {lastScore > 0 && (
         <div className="bg-white/20 rounded-lg p-4 mb-6 backdrop-blur-sm">
-          <p className="text-sm opacity-80">{t('lastScore')}</p>
+          <p className="text-sm opacity-80">{t('Last score:')} {lastScore}</p>
           <p className="text-2xl font-bold">{lastScore}</p>
         </div>
       )}
