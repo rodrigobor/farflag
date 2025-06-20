@@ -24,13 +24,12 @@ export default function App() {
     startGame,
     selectAnswer,
     isTimerActive,
-    timeLeft,
+    timeLeft
   } = useGame();
 
   const { ready, authenticated, user } = usePrivy();
   const { initLoginToFrame, loginToFrame } = useLoginToFrame();
 
-  // Autenticação via Privy + Farcaster
   useEffect(() => {
     if (!ready) return;
     if (!authenticated) {
@@ -38,12 +37,8 @@ export default function App() {
         try {
           const { nonce } = await initLoginToFrame();
           const res = await sdk.actions.signIn({ nonce, acceptAuthAddress: true });
-
           console.log('signIn result:', res);
-          if (!res?.message || !res?.signature) {
-            throw new Error('signIn retornou mensagem ou assinatura inválida');
-          }
-
+          if (!res?.message || !res?.signature) throw new Error('signIn inválido');
           await loginToFrame({ message: res.message, signature: res.signature });
         } catch (err) {
           console.error('Erro no signIn/loginToFrame:', err);
@@ -52,16 +47,16 @@ export default function App() {
     }
   }, [ready, authenticated, initLoginToFrame, loginToFrame]);
 
-  // Inicialização do frame-sdk
   useEffect(() => {
     sdk.actions.ready().then(() => setIsReady(true));
   }, []);
 
+  // Avança automaticamente para gameover quando o jogo terminar
   useEffect(() => {
-  if (gameState.isGameOver && view === 'game') {
-    setView('gameover');
-  }
-}, [gameState.isGameOver, view]);
+    if (gameState.isGameOver && view === 'game') {
+      setView('gameover');
+    }
+  }, [gameState.isGameOver, view]);
 
   const handleMintScore = async () => {
     if (!user?.farcaster?.username) {
@@ -71,15 +66,15 @@ export default function App() {
 
     setIsMinting(true);
     try {
-      await sdk.actions.sendToken({
-        token: 'eip155:8453/erc20:0xD9AA2b31bF8e1183D6B90524a11e8C0F16c4B348',
-        amount: '100000',
+      // Usa o modal Pay da Farcaster para enviar USDC
+      await sdk.actions.sendToken({        
+        amount: '100000', // 0.10 USDC (6 decimais)
+        token: 'eip155:8453/erc20:0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913',
         recipientAddress: '0x8eD01cfedAF6516A783815d67b3fd5Dedc31E18a',
       });
       setMintSuccess(true);
 
       const username = user.farcaster.username;
-
       await setDoc(doc(db, 'rankings', username), {
         username,
         score: gameState.score,
@@ -91,8 +86,8 @@ export default function App() {
         embeds: ['https://farflag.vercel.app'],
       });
     } catch (err: any) {
-      console.error('Mint error:', err);
-      alert('Mint failed: ' + (err.message ?? err));
+      console.error('Pay error:', err);
+      alert('Payment failed: ' + (err.message ?? err));
     } finally {
       setIsMinting(false);
     }
@@ -105,22 +100,20 @@ export default function App() {
     });
   };
 
-  // Se não estiver autenticado ou sdk não pronto
+  // Exibe botão de login enquanto não autenticado / sdk não pronto
   if (!ready || !authenticated || !isReady) {
     return (
       <div className="flex items-center justify-center h-screen bg-gray-100">
         <button
           className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700"
           onClick={() => {
-            // inicia login manual
             initLoginToFrame()
               .then(({ nonce }) => sdk.actions.signIn({ nonce, acceptAuthAddress: true }))
               .then(res => {
                 if (res?.message && res?.signature) {
                   return loginToFrame({ message: res.message, signature: res.signature });
-                } else {
-                  throw new Error('signIn inválido');
                 }
+                throw new Error('signIn inválido');
               })
               .catch(err => console.error('Login manual falhou:', err));
           }}
@@ -131,7 +124,7 @@ export default function App() {
     );
   }
 
-  // Render conforme a view
+  // Renderiza telas conforme a view atual
   if (view === 'home') {
     return (
       <HomeScreen
