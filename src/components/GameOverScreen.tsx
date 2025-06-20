@@ -68,7 +68,7 @@ export const GameOverScreen: React.FC<GameOverScreenProps> = ({
           <button
   onClick={handleMint}
   disabled={isMinting}
-  className="bg-green-500 hover:bg-green-600 disabled:bg-gray-500 disabled:cursor-not-allowed text-white text-2xl font-bold px-10 py-5 rounded-lg transition-colors w-full min-h-[100px] border border-green-700"
+  className="bg-green-500 hover:bg-green-600 disabled:bg-gray-500 disabled:cursor-not-allowed text-white text-2xl font-bold px-10 py-5 rounded-lg transition-colors w-full min-h-[50px] border border-green-700"
 >
   {isMinting ? t('minting') : `${t('mint')} (0.10 USDC)`}
 </button>
