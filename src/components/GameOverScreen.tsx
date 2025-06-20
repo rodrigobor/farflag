@@ -39,14 +39,14 @@ export const GameOverScreen: React.FC<GameOverScreenProps> = ({
     <div className="flex flex-col items-center justify-center min-h-screen bg-white text-black p-6">
       {/* Título e pontuação final */}
       <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold mb-2">{t('Game Over')}</h1>
+        <h1 className="text-3xl font-bold mb-2">{t('GAME OVER')}</h1>
         <div className="bg-white/20 rounded-lg p-6 backdrop-blur-sm">
           <p className="text-sm opacity-80 mb-2">{t('Final Score:')}</p>
           <p className="text-4xl font-bold">{score}</p>
 
           {/* ✅ Exibir resposta correta */}
           {correctAnswer && (
-            <p className="mt-4 text-sm text-yellow-300">
+            <p className="mt-4 text-sm text-yellow-300 font-bold">
               {t('Correct Answer')}: <span className="font-semibold">{correctAnswer}</span>
             </p>
           )}
@@ -66,18 +66,15 @@ export const GameOverScreen: React.FC<GameOverScreenProps> = ({
           )}
 
           <button
-  onClick={handleMint}
-  disabled={isMinting}
-  className="bg-green-500 hover:bg-green-600 disabled:bg-gray-500 disabled:cursor-not-allowed text-white text-2xl font-bold px-10 py-5 rounded-lg transition-colors w-full min-h-[50px] border border-green-700"
->
-  {isMinting ? t('minting') : `${t('mint')} (0.10 USDC)`}
-</button>
-
-
-
-          <p className="text-xs opacity-60 mt-2">Requires USDC on BASE network</p>
-        </div>
-      )}
+            onClick={handleMint}
+            disabled={isMinting}
+            className="bg-green-500 hover:bg-green-600 disabled:bg-gray-500 disabled:cursor-not-allowed text-white text-2xl font-bold px-10 py-5 rounded-lg transition-colors w-full min-h-[50px] border border-green-700"
+          >
+            {isMinting ? t('minting') : `${t('mint')} (0.10 USDC)`}
+          </button>
+                    <p className="text-xs opacity-60 mt-2">Requires USDC on BASE network</p>
+                  </div>
+                )}
 
       {/* Botão de compartilhar no Farcaster */}
       {mintSuccess && (
