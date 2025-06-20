@@ -90,7 +90,7 @@ export const GameOverScreen: React.FC<GameOverScreenProps> = ({
           </div>
           <button
             onClick={onShareScore}
-            className="bg-purple-500 hover:bg-purple-600 text-white px-6 py-3 rounded-lg font-semibold transition-colors w-full"
+            className="bg-purple-500 hover:bg-purple-600 text-white px-6 py-3 rounded-lg font-semibold transition-colors min-h-[50px] w-full"
           >
             {t('Share on Farcaster')}
           </button>
@@ -99,7 +99,7 @@ export const GameOverScreen: React.FC<GameOverScreenProps> = ({
 
         <button
   onClick={onViewRanking}
-  className="w-full bg-yellow-500 text-white px-6 py-4 rounded-lg font-semibold border border-yellow-700 hover:bg-yellow-600 transition-colors"
+  className="w-full min-h-[50px] bg-yellow-500 text-white px-6 py-4 rounded-lg font-semibold border border-yellow-700 hover:bg-yellow-600 transition-colors"
 >
   View Ranking
 </button>
@@ -111,7 +111,7 @@ export const GameOverScreen: React.FC<GameOverScreenProps> = ({
       <div className="space-y-3 w-full max-w-sm">
         <button
   onClick={onPlayAgain}
-  className="w-full bg-white text-blue-600 text-2xl font-bold px-10 py-5 rounded-lg hover:bg-gray-100 transition-colors min-h-[100px] border border-blue-500"
+  className="w-full bg-white text-blue-600 text-2xl font-bold px-10 py-5 rounded-lg hover:bg-gray-100 transition-colors min-h-[50px] border border-blue-500"
 >
   {t('Play Again')}
 </button>
