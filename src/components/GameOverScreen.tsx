@@ -9,6 +9,7 @@ interface GameOverScreenProps {
   isMinting?: boolean;
   mintSuccess?: boolean;
   correctAnswer?: string; // ✅ nova prop
+  onViewRanking: () => void; // <- sobre o Ranking
 }
 
 export const GameOverScreen: React.FC<GameOverScreenProps> = ({
@@ -18,8 +19,10 @@ export const GameOverScreen: React.FC<GameOverScreenProps> = ({
   onShareScore,
   isMinting = false,
   mintSuccess = false,
-  correctAnswer // ✅ adicionada
+  correctAnswer,
+  onViewRanking // ✅ Aqui está a propriedade que estava faltando
 }) => {
+
   const { t } = useTranslation();
   const [mintError, setMintError] = useState<string | null>(null);
 
@@ -93,6 +96,16 @@ export const GameOverScreen: React.FC<GameOverScreenProps> = ({
           </button>
         </div>
       )}
+
+        <button
+  onClick={onViewRanking}
+  className="w-full bg-yellow-500 text-white px-6 py-4 rounded-lg font-semibold border border-yellow-700 hover:bg-yellow-600 transition-colors"
+>
+  View Ranking
+</button>
+
+
+
 
       {/* Botão de jogar novamente */}
       <div className="space-y-3 w-full max-w-sm">
