@@ -46,7 +46,7 @@ export const GameOverScreen: React.FC<GameOverScreenProps> = ({
 
       <button
         onClick={onShareScore}
-        className="w-full mb-4 bg-purple-500 hover:bg-purple-600 text-white py-3 rounded-lg"
+        className="w-full min-h-[50px] mb-4 bg-purple-500 hover:bg-purple-600 text-white py-3 rounded-lg"
       >
         {t('Share on Farcaster')}
       </button>
@@ -55,7 +55,7 @@ export const GameOverScreen: React.FC<GameOverScreenProps> = ({
         <button
           onClick={handleMintClick}
           disabled={isMinting}
-          className="w-full mb-4 bg-green-500 hover:bg-green-600 disabled:bg-gray-400 text-white py-3 rounded-lg"
+          className="w-full min-h-[50px] mb-4 bg-green-500 hover:bg-green-600 disabled:bg-gray-400 text-white py-3 rounded-lg"
         >
           {isMinting ? t('minting') : `${t('mint')} (0.10 USDC)`}
         </button>
@@ -65,14 +65,14 @@ export const GameOverScreen: React.FC<GameOverScreenProps> = ({
 
       <button
         onClick={onViewRanking}
-        className="w-full mb-4 bg-yellow-500 hover:bg-yellow-600 text-white py-3 rounded-lg"
+        className="w-full min-h-[50px] mb-4 bg-yellow-500 hover:bg-yellow-600 text-white py-3 rounded-lg"
       >
         {t('View Ranking')}
       </button>
 
       <button
         onClick={onPlayAgain}
-        className="w-full bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-lg"
+        className="w-full min-h-[50px] bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-lg"
       >
         {t('Play Again')}
       </button>
