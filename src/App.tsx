@@ -13,9 +13,9 @@ import { db } from './firebaseConfig';
 
 export default function App() {
   const [isReady, setIsReady] = useState(false);
-  const [isPaying, setIsPaying] = useState(false);
-  const [paySuccess, setPaySuccess] = useState(false);
-  const [view, setView] = useState<'home'|'game'|'gameover'|'ranking'>('home');
+  const [isMinting, setIsMinting] = useState(false);
+  const [mintSuccess, setMintSuccess] = useState(false);
+  const [view, setView] = useState<'home' | 'game' | 'gameover' | 'ranking'>('home');
 
   const {
     gameState,
@@ -30,113 +30,135 @@ export default function App() {
   const { ready, authenticated, user } = usePrivy();
   const { initLoginToFrame, loginToFrame } = useLoginToFrame();
 
-  // Autenticação via Privy + Farcaster
+  // login automático via Privy + Farcaster, com tipos ajustados
   useEffect(() => {
     if (!ready || authenticated) return;
+
     (async () => {
-      const { nonce } = await initLoginToFrame();
-      const res: any = await sdk.actions.signIn({ nonce, acceptAuthAddress: true });
-      if (res.message && res.signature) {
-        await loginToFrame({ message: res.message, signature: res.signature });
+      try {
+        const resInit = await initLoginToFrame();
+        const nonce: string = (resInit as any).nonce;
+
+        const res = await sdk.actions.signIn({ nonce, acceptAuthAddress: true });
+        const message: string = (res as any).message;
+        const signature: string = (res as any).signature;
+
+        if (!message || !signature) throw new Error('signIn inválido');
+        await loginToFrame({ message, signature });
+      } catch (err: any) {
+        console.error('Erro no signIn/loginToFrame:', err);
       }
     })();
   }, [ready, authenticated, initLoginToFrame, loginToFrame]);
 
-  // Espera o SDK ficar pronto
+  // espera o SDK do Farcaster estar pronto
   useEffect(() => {
     sdk.actions.ready().then(() => setIsReady(true));
   }, []);
 
-  // Muda para GameOver quando o jogo termina
+  // avança automaticamente para tela de "gameover" quando isGameOver ficar true
   useEffect(() => {
-    if (gameState.isGameOver && view === 'game') setView('gameover');
+    if (gameState.isGameOver && view === 'game') {
+      setView('gameover');
+    }
   }, [gameState.isGameOver, view]);
 
-  // Função de Pay (botão “pagamento”)
-  const handlePayScore = async () => {
+  // função de pagamento com USDC usando o modal/frame do Farcaster
+  const handleMintScore = async () => {
     if (!user?.farcaster?.username) {
       alert('Você precisa estar logado no Farcaster.');
       return;
     }
-    setIsPaying(true);
+
+    setIsMinting(true);
     try {
-      await sdk.actions.pay({
+      await sdk.actions.sendToken({
         recipientAddress: '0x8eD01cfedAF6516A783815d67b3fd5Dedc31E18a',
-        token: 'eip155:8453/erc20:0xD9AA2b31bF8e1183D6B90524a11e8C0F16c4B348',
-        amount: '100000' // 0.10 USDC
+        token: 'eip155:8453/erc20:0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913',
+        amount: '100000' // 0.10 USDC (6 casas decimais)
       });
-      setPaySuccess(true);
-      await setDoc(doc(db, 'rankings', user.farcaster.username), {
-        username: user.farcaster.username,
+      setMintSuccess(true);
+
+      const username = user.farcaster.username;
+      await setDoc(doc(db, 'rankings', username), {
+        username,
         score: gameState.score,
         createdAt: serverTimestamp()
       });
+
       await sdk.actions.composeCast({
-        text: `🚩 I scored ${gameState.score} points in FarFlag!`,
+        text: `🚩 I scored ${gameState.score} points in FarFlag!`,
         embeds: ['https://farflag.vercel.app']
       });
     } catch (err: any) {
-      console.error('Pay error:', err);
+      console.error('Erro no pagamento:', err);
       alert('Pagamento falhou: ' + (err.message ?? err));
     } finally {
-      setIsPaying(false);
+      setIsMinting(false);
     }
   };
 
   const handleShareScore = async () => {
     await sdk.actions.composeCast({
-      text: `🚩 I scored ${gameState.score} points in FarFlag!`,
+      text: `🚩 I scored ${gameState.score} points in FarFlag!`,
       embeds: ['https://farflag.vercel.app']
     });
   };
 
-  // Caso não esteja pronto ou autenticado
+  // exibe tela de carregando enquanto falta autenticação ou sdk não está pronto
   if (!ready || !authenticated || !isReady) {
     return (
-      <div className="flex items-center justify-center h-screen">
-        <button
-          className="bg-blue-600 text-white px-6 py-3 rounded-lg"
-          onClick={() => {
-            initLoginToFrame()
-              .then(({ nonce }: any) => sdk.actions.signIn({ nonce, acceptAuthAddress: true }))
-              .then((res: any) => {
-                if (res.message && res.signature) {
-                  return loginToFrame({ message: res.message, signature: res.signature });
-                }
-              })
-              .catch(console.error);
-          }}
-        >
-          Login com Farcaster
-        </button>
+      <div className="flex items-center justify-center h-screen bg-gray-100">
+        <span className="text-lg">Carregando…</span>
       </div>
     );
   }
 
-  // Renderização das telas
+  // renderiza telas com base na view atual
   if (view === 'home') {
-    return <HomeScreen lastScore={lastScore} onStartGame={() => { startGame(); setView('game'); }} />;
+    return (
+      <HomeScreen
+        lastScore={lastScore}
+        onStartGame={() => {
+          startGame();
+          setView('game');
+        }}
+      />
+    );
   }
+
   if (view === 'game') {
-    return <GameScreen gameState={gameState} onSelectAnswer={selectAnswer} isTimerActive={isTimerActive} timeLeft={timeLeft} />;
+    return (
+      <GameScreen
+        gameState={gameState}
+        onSelectAnswer={selectAnswer}
+        isTimerActive={isTimerActive}
+        timeLeft={timeLeft}
+      />
+    );
   }
+
   if (view === 'gameover') {
     return (
       <GameOverScreen
         score={gameState.score}
-        onPlayAgain={() => { startGame(); setView('game'); }}
-        onMintScore={handlePayScore}
+        onPlayAgain={() => {
+          startGame();
+          setView('game');
+        }}
+        onMintScore={handleMintScore}
         onShareScore={handleShareScore}
-        isMinting={isPaying}
-        mintSuccess={paySuccess}
+        isMinting={isMinting}
+        mintSuccess={mintSuccess}
         correctAnswer={lastQuestion?.country}
         onViewRanking={() => setView('ranking')}
       />
     );
   }
+
   if (view === 'ranking') {
     return <RankingScreen onBack={() => setView('home')} />;
   }
 
   return null;
-};
+}
