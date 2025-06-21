@@ -109,7 +109,7 @@ export default function App() {
   if (!ready || !authenticated || !isReady) {
     return (
       <div className="flex items-center justify-center h-screen bg-gray-100">
-        <span className="text-lg">Carregando…</span>
+        <span className="text-lg">Loading…</span>
       </div>
     );
   }
