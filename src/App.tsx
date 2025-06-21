@@ -30,40 +30,28 @@ export default function App() {
   const { ready, authenticated, user } = usePrivy();
   const { initLoginToFrame, loginToFrame } = useLoginToFrame();
 
-  // login automático via Privy + Farcaster, com tipos ajustados
   useEffect(() => {
     if (!ready || authenticated) return;
-
     (async () => {
       try {
-        const resInit = await initLoginToFrame();
-        const nonce: string = (resInit as any).nonce;
-
+        const { nonce } = await initLoginToFrame();
         const res = await sdk.actions.signIn({ nonce, acceptAuthAddress: true });
-        const message: string = (res as any).message;
-        const signature: string = (res as any).signature;
-
-        if (!message || !signature) throw new Error('signIn inválido');
-        await loginToFrame({ message, signature });
+        if (!res.message || !res.signature) throw new Error('signIn inválido');
+        await loginToFrame({ message: res.message, signature: res.signature });
       } catch (err: any) {
         console.error('Erro no signIn/loginToFrame:', err);
       }
     })();
   }, [ready, authenticated, initLoginToFrame, loginToFrame]);
 
-  // espera o SDK do Farcaster estar pronto
   useEffect(() => {
     sdk.actions.ready().then(() => setIsReady(true));
   }, []);
 
-  // avança automaticamente para tela de "gameover" quando isGameOver ficar true
   useEffect(() => {
-    if (gameState.isGameOver && view === 'game') {
-      setView('gameover');
-    }
+    if (gameState.isGameOver && view === 'game') setView('gameover');
   }, [gameState.isGameOver, view]);
 
-  // função de pagamento com USDC usando o modal/frame do Farcaster
   const handleMintScore = async () => {
     if (!user?.farcaster?.username) {
       alert('Você precisa estar logado no Farcaster.');
@@ -75,7 +63,7 @@ export default function App() {
       await sdk.actions.sendToken({
         recipientAddress: '0x8eD01cfedAF6516A783815d67b3fd5Dedc31E18a',
         token: 'eip155:8453/erc20:0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913',
-        amount: '100000' // 0.10 USDC (6 casas decimais)
+        amount: '100000'
       });
       setMintSuccess(true);
 
@@ -84,11 +72,6 @@ export default function App() {
         username,
         score: gameState.score,
         createdAt: serverTimestamp()
-      });
-
-      await sdk.actions.composeCast({
-        text: `🚩 I scored ${gameState.score} points in FarFlag!`,
-        embeds: ['https://farflag.vercel.app']
       });
     } catch (err: any) {
       console.error('Erro no pagamento:', err);
@@ -105,47 +88,25 @@ export default function App() {
     });
   };
 
-  // exibe tela de carregando enquanto falta autenticação ou sdk não está pronto
   if (!ready || !authenticated || !isReady) {
     return (
       <div className="flex items-center justify-center h-screen bg-gray-100">
-        <span className="text-lg">Loading…</span>
+        <span className="text-lg">Carregando…</span>
       </div>
     );
   }
 
-  // renderiza telas com base na view atual
   if (view === 'home') {
-    return (
-      <HomeScreen
-        lastScore={lastScore}
-        onStartGame={() => {
-          startGame();
-          setView('game');
-        }}
-      />
-    );
+    return <HomeScreen lastScore={lastScore} onStartGame={() => { startGame(); setView('game'); }} />;
   }
-
   if (view === 'game') {
-    return (
-      <GameScreen
-        gameState={gameState}
-        onSelectAnswer={selectAnswer}
-        isTimerActive={isTimerActive}
-        timeLeft={timeLeft}
-      />
-    );
+    return <GameScreen gameState={gameState} onSelectAnswer={selectAnswer} isTimerActive={isTimerActive} timeLeft={timeLeft} />;
   }
-
   if (view === 'gameover') {
     return (
       <GameOverScreen
         score={gameState.score}
-        onPlayAgain={() => {
-          startGame();
-          setView('game');
-        }}
+        onPlayAgain={() => { startGame(); setView('game'); }}
         onMintScore={handleMintScore}
         onShareScore={handleShareScore}
         isMinting={isMinting}
@@ -155,7 +116,6 @@ export default function App() {
       />
     );
   }
-
   if (view === 'ranking') {
     return <RankingScreen onBack={() => setView('home')} />;
   }
